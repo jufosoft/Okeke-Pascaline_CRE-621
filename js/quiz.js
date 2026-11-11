@@ -1,0 +1,10 @@
+const questions=[
+["Which component is commonly called the brain of a computer?",["CPU","Monitor","Keyboard","Speaker"],0,"The CPU executes instructions and processes data."],
+["Which one is an input device?",["Monitor","Keyboard","Printer","Speaker"],1,"A keyboard sends information into a computer."],
+["What is the main job of a robot sensor?",["To decorate the robot","To detect information about its environment","To supply all its power","To replace the controller"],1,"Sensors measure or detect things such as distance, light or temperature."],
+["Which Arduino function runs repeatedly after setup()?",["start()","repeat()","loop()","mainloop()"],2,"Arduino repeatedly executes the loop() function."],
+["What component limits current through an LED?",["Resistor","Wheel","Switch cover","Microphone"],0,"A correctly selected resistor helps protect an LED from excessive current."],
+["Which sensor is commonly used to measure distance with sound pulses?",["Ultrasonic sensor","Temperature sensor","LDR","Touch switch"],0,"An ultrasonic sensor sends sound pulses and measures their echo time."]
+];
+const form=document.querySelector("#quiz-form");
+if(form){form.innerHTML=questions.map((q,i)=>`<div class="question"><h3>${i+1}. ${q[0]}</h3>${q[1].map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}" required> ${o}</label>`).join("")}<p class="muted hidden" id="fb${i}"></p></div>`).join("")+`<button type="submit">Submit answers</button>`;form.onsubmit=e=>{e.preventDefault();let score=0;questions.forEach((q,i)=>{let v=Number(new FormData(form).get("q"+i));let f=document.querySelector("#fb"+i);if(v===q[2])score++;f.classList.remove("hidden");f.textContent=(v===q[2]?"✓ ":"✗ ")+q[3]});let pct=Math.round(score/questions.length*100);document.querySelector("#quiz-result").innerHTML=`<div class="result"><h2>Your score: ${score}/${questions.length} (${pct}%)</h2><p>${pct>=80?"Excellent work!":pct>=50?"Good effort. Review the explanations and try again.":"Keep practising. Revisit the lessons and try again."}</p><button onclick="location.reload()">Try again</button></div>`;localStorage.setItem("robolearn_last_score",pct)}}
